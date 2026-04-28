@@ -4,13 +4,28 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css'
 import App from './App.jsx'
 import { CartProvider } from './context/CartContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
+import { WishlistProvider } from "./context/WishlistContext";
+import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
+import { OrderProvider } from "./context/OrderContext";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-     <CartProvider>
-      <App/>
-      </CartProvider>
-    </BrowserRouter>
+        <ThemeProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <OrderProvider>
+                <WishlistProvider>
+                  <CartProvider>
+                    <App />
+                  </CartProvider>
+                </WishlistProvider>
+              </OrderProvider>
+            </AuthProvider>
+          </ToastProvider>
+        </ThemeProvider>
+      </BrowserRouter>
   </StrictMode>,
 )

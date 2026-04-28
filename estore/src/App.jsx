@@ -7,9 +7,14 @@ function App() {
   
   return (
     <>
-      <Navbar />
-      <AppRoutes />
-      <Footer />
+
+     <div className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white transition">
+         <Navbar />
+              <main className="flex-1">
+                <AppRoutes />
+              </main>
+          <Footer />
+      </div>
     </>
   );
 }

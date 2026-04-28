@@ -1,47 +1,92 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 export default function Cart() {
-  const { cart, removeFromCart, total } = useCart();
+  const {
+    cart,
+    increaseQty,
+    decreaseQty,
+    removeFromCart,
+    total,
+  } = useCart();
+
+  if (cart.length === 0) {
+    return (
+      <div className="text-center mt-20">
+        <h1 className="text-4xl font-bold mb-4">
+          Cart is Empty 🛒
+        </h1>
+
+        <Link
+          to="/products"
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+        >
+          Shop Now
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
+    <div className="max-w-6xl mx-auto px-6 py-10">
       <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
 
-      {cart.length === 0 ? (
-        <p className="text-xl">Cart is empty.</p>
-      ) : (
-        <>
-          {cart.map((item, index) => (
-            <div
-              key={index}
-              className="flex gap-4 items-center border p-4 rounded-xl mb-4"
+      {cart.map((item) => (
+        <div
+          key={item.id}
+          className="grid md:grid-cols-4 gap-4 items-center border rounded-xl p-4 mb-4"
+        >
+          <img
+            src={item.image}
+            className="h-24 w-24 object-contain"
+          />
+
+          <div>
+            <h2 className="font-semibold">{item.title}</h2>
+            <p className="text-green-600 font-bold">
+              ${item.price}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => decreaseQty(item.id)}
+              className="px-3 py-1 bg-gray-300 rounded"
             >
-              <img
-                src={item.image}
-                className="h-20 w-20 object-contain"
-              />
+              -
+            </button>
 
-              <div className="flex-1">
-                <h2 className="font-semibold">{item.title}</h2>
-                <p className="text-green-600 font-bold">
-                  ${item.price}
-                </p>
-              </div>
+            <span>{item.qty}</span>
 
-              <button
-                onClick={() => removeFromCart(index)}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+            <button
+              onClick={() => increaseQty(item.id)}
+              className="px-3 py-1 bg-gray-300 rounded"
+            >
+              +
+            </button>
+          </div>
 
-          <h2 className="text-3xl font-bold mt-8">
-            Total: ${total.toFixed(2)}
-          </h2>
-        </>
-      )}
+          <button
+            onClick={() => removeFromCart(item.id)}
+            className="bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+
+      <div className="mt-8 flex justify-between items-center">
+        <h2 className="text-3xl font-bold">
+          Total: ${total.toFixed(2)}
+        </h2>
+
+        <Link
+          to="/checkout"
+          className="bg-green-600 text-white px-8 py-3 rounded-xl"
+        >
+          Checkout
+        </Link>
+      </div>
     </div>
   );
 }
